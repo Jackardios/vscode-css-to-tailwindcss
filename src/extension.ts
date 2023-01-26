@@ -1,16 +1,108 @@
 import * as vscode from "vscode";
+import { TailwindConverter } from "css-to-tailwindcss";
 
-export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand(
-    "css-to-tailwindcss.convertCSSToTailwindCSS",
-    () => {
-      vscode.window.showInformationMessage(
-        "Hello World from CSS to TailwindCSS!"
-      );
-    }
-  );
+import { WorkspaceFolderClient } from "./lib/WorkspaceFolderClient";
+import { replaceCurrentSelectedText } from "./utils/selections";
 
-  context.subscriptions.push(disposable);
+let clients: Map<string, WorkspaceFolderClient> = new Map();
+
+function makeKeyByFolder(folder: vscode.WorkspaceFolder) {
+  return folder.uri.toString();
 }
 
-export function deactivate() {}
+function getClientByFolder(folder: vscode.WorkspaceFolder) {
+  return clients.get(makeKeyByFolder(folder)) || null;
+}
+
+function createClientByFolder(
+  folder: vscode.WorkspaceFolder,
+  context: vscode.ExtensionContext
+) {
+  const key = makeKeyByFolder(folder);
+  const foundClient = clients.get(key);
+  if (foundClient) {
+    return foundClient;
+  }
+
+  const client = new WorkspaceFolderClient(folder, context);
+  clients.set(key, client);
+  client.init();
+
+  return client;
+}
+
+function deleteClientByFolder(folder: vscode.WorkspaceFolder) {
+  const key = makeKeyByFolder(folder);
+  clients.get(key)?.destroy();
+  clients.delete(key);
+}
+
+function getClientByActiveTextEditor(editor: vscode.TextEditor | undefined) {
+  if (!editor) {
+    return null;
+  }
+
+  const folder = vscode.workspace.getWorkspaceFolder(editor?.document.uri);
+
+  if (!folder) {
+    return null;
+  }
+
+  return getClientByFolder(folder);
+}
+
+export function activate(context: vscode.ExtensionContext) {
+  vscode.workspace.workspaceFolders?.forEach((folder) => {
+    createClientByFolder(folder, context);
+  });
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "css-to-tailwindcss.cssToTailwindCSS",
+      () => {
+        replaceCurrentSelectedText(async (selectedText) => {
+          const converter =
+            getClientByActiveTextEditor(
+              vscode.window.activeTextEditor
+            )?.getCurrentTailwindConverter() || new TailwindConverter();
+
+          return (
+            await converter.convertCSS(selectedText)
+          ).convertedRoot.toString();
+        });
+      }
+    ),
+
+    vscode.workspace.onDidChangeConfiguration((event) => {
+      clients.forEach((client, key) => {
+        const folder = vscode.workspace.getWorkspaceFolder(
+          vscode.Uri.parse(key)
+        );
+
+        if (
+          event.affectsConfiguration(
+            "tailwindCSS.experimental.configFile",
+            folder
+          ) ||
+          event.affectsConfiguration("tailwindCSS.rootFontSize", folder)
+        ) {
+          client.refresh();
+        }
+      });
+    }),
+
+    vscode.workspace.onDidChangeWorkspaceFolders((event) => {
+      for (let folder of event.added) {
+        createClientByFolder(folder, context);
+      }
+      for (let folder of event.removed) {
+        deleteClientByFolder(folder);
+      }
+    })
+  );
+}
+
+export function deactivate() {
+  clients.forEach((client) => client.destroy());
+  clients = new Map();
+}
