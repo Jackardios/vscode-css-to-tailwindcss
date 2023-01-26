@@ -1,6 +1,6 @@
 # CSS to TailwindCSS converter (VS Code extension)
 
-**[🔗 NPM Package](https://www.npmjs.com/package/css-to-tailwindcss)**
+**[🔗 NPM Package](https://github.com/Jackardios/css-to-tailwindcss/)**
 
 🔄 Convert your **CSS** to **TailwindCSS** considering workspace tailwind configuration in a few clicks.
 
@@ -10,7 +10,15 @@
 
 **[Install via the Visual Studio Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=jackardios.vscode-css-to-tailwindcss)**
 
-The extension, when activated, finds the first [Tailwind config file](https://tailwindcss.com/docs/installation#create-your-configuration-file) named `tailwind.config.js` or `tailwind.config.cjs` in your workspace and uses it when converting CSS.
+The extension finds the first [Tailwind config file](https://tailwindcss.com/docs/installation#create-your-configuration-file) named `tailwind.config.js` or `tailwind.config.cjs` in your workspace and uses it when converting CSS. Use `tailwindCSS.experimental.configFile` setting to manually specify the config file(s) yourself instead.
+
+## Usage
+
+1. Select the CSS you want to convert to TailwindCSS
+2. Open command pallete (Mac: Shift+Cmd+P; Windows: Shift+Ctrl+P)
+3. Run "Convert CSS to TailwindCSS" command
+
+For more convenience, you can also assign a keyboard shortcut to the "Convert CSS to TailwindCSS" command.
 
 ## Extension Settings
 
