@@ -1,6 +1,6 @@
 {
   "name": "vscode-css-to-tailwindcss",
-  "displayName": "CSS to TailwindCSS",
+  "displayName": "CSS to TailwindCSS converter",
   "description": "CSS to TailwindCSS 3.x converter extension for Visual Studio Code",
   "author": "Salavat Salakhutdinov <salahutdinov.salavat@gmail.com>",
   "license": "MIT",
@@ -32,13 +32,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:css-to-tailwindcss.convertCSSToTailwindCSS"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "css-to-tailwindcss.convertCSSToTailwindCSS",
+        "command": "css-to-tailwindcss.cssToTailwindCSS",
         "title": "Convert CSS to TailwindCSS"
       }
     ]
@@ -52,16 +52,23 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
     "@types/glob": "^8.0.0",
+    "@types/micromatch": "^4.0.2",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
-    "typescript": "^4.9.3",
-    "@vscode/test-electron": "^2.2.0"
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "css-to-tailwindcss": "^0.2.2",
+    "jiti": "^1.16.2",
+    "micromatch": "^4.0.5",
+    "postcss-nested": "^6.0.0"
   }
 }
