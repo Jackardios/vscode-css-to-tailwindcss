@@ -32,6 +32,7 @@
   "categories": [
     "Other"
   ],
+  "icon": "media/icon.png",
   "activationEvents": [
     "onStartupFinished"
   ],
