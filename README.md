@@ -6,6 +6,16 @@
 
 ![VSCode extension demo](.github/demo.gif)
 
+## Features:
+
+- supports all (or almost all) the features currently available in TailwindCSS
+- supports nested sass-like syntax
+- automatically finds tailwind config in your workspace and uses it for conversion (it is possible to configure config file path)
+- colors are matched regardless of the format used
+- rem is converted to px (it is possible to configure the rem size)
+- non-convertible CSS declarations are simply skipped
+- [ambiguities](https://tailwindcss.com/docs/adding-custom-styles#resolving-ambiguities) when using css variables are resolved automatically
+
 ## Installation
 
 **[Install via the Visual Studio Code Marketplace →](https://marketplace.visualstudio.com/items?itemName=Jackardios.vscode-css-to-tailwindcss)**
