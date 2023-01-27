@@ -36,7 +36,7 @@ For more convenience, you can also assign a keyboard shortcut to the "Convert CS
 
 **Default: `16`**
 
-Root font size in pixels. Used to convert `rem` CSS values to their `px` equivalents. See [`tailwindCSS.showPixelEquivalents`](#tailwindcssshowpixelequivalents).
+Root font size in pixels. Used to convert `rem` CSS values to their `px` equivalents.
 
 ### `tailwindCSS.experimental.configFile`
 
