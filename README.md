@@ -32,6 +32,8 @@ For more convenience, you can also assign a keyboard shortcut to the "Convert CS
 
 ## Extension Settings
 
+To avoid duplicate settings, this extension uses the [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) settings
+
 ### `tailwindCSS.rootFontSize`
 
 **Default: `16`**
