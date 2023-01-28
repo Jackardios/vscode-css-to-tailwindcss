@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-export async function replaceCurrentSelectedText(
+export async function replaceCurrentSelection(
   replacer: (selectedText: string) => string | Promise<string>
 ) {
   const editor = vscode.window.activeTextEditor;
@@ -30,7 +30,7 @@ export async function replaceCurrentSelectedText(
     });
   }
 
-  editor.edit((builder) => {
+  return await editor.edit(async (builder) => {
     replacements.forEach(({ selection, replacement }) => {
       builder.replace(selection, replacement);
     });

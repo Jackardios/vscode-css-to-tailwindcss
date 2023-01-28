@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { TailwindConverter } from "css-to-tailwindcss";
 
 import { WorkspaceFolderClient } from "./lib/WorkspaceFolderClient";
-import { replaceCurrentSelectedText } from "./utils/selections";
+import { replaceCurrentSelection } from "./utils/selections";
 
 let clients: Map<string, WorkspaceFolderClient> = new Map();
 
@@ -57,20 +57,17 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(
-      "css-to-tailwindcss.cssToTailwindCSS",
-      () => {
-        replaceCurrentSelectedText(async (selectedText) => {
-          const converter =
-            getClientByActiveTextEditor(
-              vscode.window.activeTextEditor
-            )?.getCurrentTailwindConverter() || new TailwindConverter();
+    vscode.commands.registerCommand("css-to-tailwindcss.cssToTailwindCSS", () =>
+      replaceCurrentSelection(async (selectedText) => {
+        const converter =
+          getClientByActiveTextEditor(
+            vscode.window.activeTextEditor
+          )?.getCurrentTailwindConverter() || new TailwindConverter();
 
-          return (
-            await converter.convertCSS(selectedText)
-          ).convertedRoot.toString();
-        });
-      }
+        return (
+          await converter.convertCSS(selectedText)
+        ).convertedRoot.toString();
+      })
     ),
 
     vscode.workspace.onDidChangeConfiguration((event) => {
