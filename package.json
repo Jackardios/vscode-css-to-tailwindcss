@@ -58,6 +58,7 @@
     "@types/micromatch": "^4.0.2",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/postcss-js": "^4.0.0",
     "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
@@ -70,6 +71,8 @@
   "dependencies": {
     "css-to-tailwindcss": "^0.2.5",
     "micromatch": "^4.0.5",
-    "postcss-nested": "^6.0.0"
+    "postcss-js": "^4.0.0",
+    "postcss-nested": "^6.0.0",
+    "tolerant-json-parser": "^1.0.1"
   }
 }
