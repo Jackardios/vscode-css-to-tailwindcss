@@ -4,7 +4,11 @@
 
 🔄 Convert your **CSS** to **TailwindCSS** considering workspace tailwind configuration in a few clicks.
 
-![VSCode extension demo](.github/demo.gif)
+![VSCode extension demo](.github/css-demo.gif)
+
+You can even convert simple JS objects!:
+
+![VSCode extension demo](.github/jss-demo.gif)
 
 ## Features:
 
