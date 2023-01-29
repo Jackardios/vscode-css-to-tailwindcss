@@ -69,7 +69,6 @@
   },
   "dependencies": {
     "css-to-tailwindcss": "^0.2.5",
-    "jiti": "^1.16.2",
     "micromatch": "^4.0.5",
     "postcss-nested": "^6.0.0"
   }
