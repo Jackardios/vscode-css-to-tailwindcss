@@ -38,6 +38,12 @@ For more convenience, you can also assign a keyboard shortcut to the "Convert CS
 
 To avoid duplicate settings, this extension uses the [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) settings
 
+### `cssToTailwindCss.arbitraryProperties`
+
+**Default: `false`**
+
+Defines whether non-convertible properties should be converted as [arbitrary properties](https://tailwindcss.com/docs/adding-custom-styles#arbitrary-properties).
+
 ### `tailwindCSS.rootFontSize`
 
 **Default: `16`**

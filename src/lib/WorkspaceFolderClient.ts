@@ -43,17 +43,20 @@ export class WorkspaceFolderClient {
   }
 
   protected async refreshSettings() {
-    const settings = vscode.workspace.getConfiguration(
+    const converterSettings = vscode.workspace.getConfiguration(
+      "cssToTailwindCss",
+      this.workspaceFolder
+    );
+    const intellisenseSettings = vscode.workspace.getConfiguration(
       "tailwindCSS",
       this.workspaceFolder
     );
 
-    let configFilePattern = settings.get("experimental.configFile") as
-      | string
-      | Record<string, string | string[]>
-      | undefined;
+    let configFilePattern = intellisenseSettings.get(
+      "experimental.configFile"
+    ) as string | Record<string, string | string[]> | undefined;
 
-    let remInPx = parseInt(settings.get("rootFontSize") || "16");
+    let remInPx = parseInt(intellisenseSettings.get("rootFontSize") || "16");
 
     if (configFilePattern && typeof configFilePattern !== "string") {
       Log.error(
@@ -72,6 +75,9 @@ export class WorkspaceFolderClient {
     );
 
     this.converterConfig.remInPx = isNaN(remInPx) ? 16 : remInPx;
+    this.converterConfig.arbitraryPropertiesIsEnabled = !!converterSettings.get(
+      "arbitraryProperties"
+    );
 
     if (
       !this.patternsIsEqual(
@@ -81,6 +87,11 @@ export class WorkspaceFolderClient {
     ) {
       await this.refreshConfigFileWatcher();
     }
+    this.refreshConverter();
+  }
+
+  protected async refreshConverter() {
+    this.currentConverter = new TailwindConverter(this.converterConfig);
   }
 
   protected async refreshConfigFileWatcher() {
@@ -133,6 +144,16 @@ export class WorkspaceFolderClient {
     this.currentConfigFileWatcher = null;
   }
 
+  protected patternsIsEqual(
+    first: vscode.RelativePattern | null,
+    second: vscode.RelativePattern | null
+  ) {
+    return (
+      first?.baseUri.fsPath === second?.baseUri.fsPath &&
+      first?.pattern === second?.pattern
+    );
+  }
+
   protected async setTailwindConfigFromFile(filePath: string | null) {
     if (filePath) {
       try {
@@ -143,21 +164,5 @@ export class WorkspaceFolderClient {
     } else {
       delete this.converterConfig.tailwindConfig;
     }
-
-    this.refreshConverter();
-  }
-
-  protected async refreshConverter() {
-    this.currentConverter = new TailwindConverter(this.converterConfig);
-  }
-
-  protected patternsIsEqual(
-    first: vscode.RelativePattern | null,
-    second: vscode.RelativePattern | null
-  ) {
-    return (
-      first?.baseUri.fsPath === second?.baseUri.fsPath &&
-      first?.pattern === second?.pattern
-    );
   }
 }

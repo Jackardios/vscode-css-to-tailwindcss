@@ -58,15 +58,17 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("css-to-tailwindcss.cssToTailwindCSS", () =>
-      replaceCurrentSelection(async (selectionText) => {
-        const converter =
-          getClientByActiveTextEditor(
-            vscode.window.activeTextEditor
-          )?.getCurrentTailwindConverter() || new TailwindConverter();
+    vscode.commands.registerCommand(
+      "cssToTailwindCss.convertCssToTailwindCss",
+      () =>
+        replaceCurrentSelection(async (selectionText) => {
+          const converter =
+            getClientByActiveTextEditor(
+              vscode.window.activeTextEditor
+            )?.getCurrentTailwindConverter() || new TailwindConverter();
 
-        return await convertToTailwindCSS(selectionText, converter);
-      })
+          return await convertToTailwindCSS(selectionText, converter);
+        })
     ),
 
     vscode.workspace.onDidChangeConfiguration((event) => {
@@ -76,6 +78,7 @@ export function activate(context: vscode.ExtensionContext) {
         );
 
         if (
+          event.affectsConfiguration("cssToTailwindCss", folder) ||
           event.affectsConfiguration(
             "tailwindCSS.experimental.configFile",
             folder

@@ -40,10 +40,20 @@
   "contributes": {
     "commands": [
       {
-        "command": "css-to-tailwindcss.cssToTailwindCSS",
+        "command": "cssToTailwindCss.convertCssToTailwindCss",
         "title": "Convert CSS to TailwindCSS"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "CSS to TailwindCSS converter",
+      "properties": {
+        "cssToTailwindCss.arbitraryProperties": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Defines whether non-convertible properties should be converted as 'arbitrary properties'."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --minify",
