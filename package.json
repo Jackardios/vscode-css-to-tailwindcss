@@ -83,7 +83,7 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
-    "css-to-tailwindcss": "^1.0.2",
+    "css-to-tailwindcss": "^1.0.3",
     "micromatch": "^4.0.5",
     "postcss-js": "^4.0.0",
     "postcss-nested": "^6.0.0",
