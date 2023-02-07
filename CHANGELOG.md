@@ -1,5 +1,13 @@
 # Change Log
 
+### 1.2.2
+
+- Fix fallback TailwindConverter
+
+### 1.2.1
+
+- Fix incorrect conversion of border declaration
+
 ### 1.2.0
 
 - Update `css-to-tailwindcss` package to stable v1
