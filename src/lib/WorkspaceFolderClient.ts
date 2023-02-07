@@ -7,6 +7,10 @@ import { loadConfigFile } from "../utils/config";
 
 const DEFAULT_TAILWIND_CONFIG_FILE_PATTERN = `**/${CONFIG_FILE_GLOB}`;
 
+export const DEFAULT_CONVERTER_CONFIG: Partial<TailwindConverterConfig> = {
+  postCSSPlugins: [require("postcss-nested")],
+};
+
 export class WorkspaceFolderClient {
   protected workspaceFolder: vscode.WorkspaceFolder;
   protected extensionContext: vscode.ExtensionContext;
@@ -21,9 +25,7 @@ export class WorkspaceFolderClient {
   ) {
     this.workspaceFolder = workspaceFolder;
     this.extensionContext = extensionContext;
-    this.converterConfig = {
-      postCSSPlugins: [require("postcss-nested")],
-    };
+    this.converterConfig = DEFAULT_CONVERTER_CONFIG;
   }
 
   async init() {

@@ -1,7 +1,10 @@
 import * as vscode from "vscode";
 import { TailwindConverter } from "css-to-tailwindcss";
 
-import { WorkspaceFolderClient } from "./lib/WorkspaceFolderClient";
+import {
+  DEFAULT_CONVERTER_CONFIG,
+  WorkspaceFolderClient,
+} from "./lib/WorkspaceFolderClient";
 import { replaceCurrentSelection } from "./utils/selections";
 import { convertToTailwindCSS } from "./utils/converter";
 
@@ -65,7 +68,8 @@ export function activate(context: vscode.ExtensionContext) {
           const converter =
             getClientByActiveTextEditor(
               vscode.window.activeTextEditor
-            )?.getCurrentTailwindConverter() || new TailwindConverter();
+            )?.getCurrentTailwindConverter() ||
+            new TailwindConverter(DEFAULT_CONVERTER_CONFIG);
 
           return await convertToTailwindCSS(selectionText, converter);
         })
