@@ -85,6 +85,7 @@
   "dependencies": {
     "css-to-tailwindcss": "^1.0.3",
     "micromatch": "^4.0.5",
+    "nanoid": "^4.0.1",
     "postcss-js": "^4.0.0",
     "postcss-nested": "^6.0.0",
     "tolerant-json-parser": "^1.0.1"

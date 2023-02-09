@@ -5,21 +5,63 @@ import postcss from "postcss";
 import * as postcssJs from "postcss-js";
 import { Log } from "./log";
 import { TailwindConverter } from "css-to-tailwindcss";
+import { nanoid } from "nanoid";
+import { isPlainObject } from "./object";
+
+function wrapCSS(id: string, css: string) {
+  return `${id} { ${css} }`;
+}
+
+function deepUnwrapAtRule(id: string, atRuleValue: any) {
+  if (!isPlainObject(atRuleValue)) {
+    return atRuleValue;
+  }
+
+  Object.keys(atRuleValue).forEach((itemKey) => {
+    const itemValue = atRuleValue[itemKey];
+
+    if (itemKey.startsWith("@")) {
+      deepUnwrapAtRule(id, itemValue);
+    } else if (isPlainObject(itemValue)) {
+      delete atRuleValue[itemKey];
+      Object.assign(atRuleValue, itemValue);
+    }
+  });
+
+  return atRuleValue;
+}
+
+function unwrapJSS(id: string, jss: Record<string, any>) {
+  const result = jss[id];
+
+  delete jss[id];
+  Object.keys(jss).forEach((key) => {
+    const jssItem = jss[key];
+    if (key.startsWith("@")) {
+      result[key] = deepUnwrapAtRule(id, jssItem);
+    } else {
+      result[key.replace(id, "&")] = jssItem;
+    }
+  });
+
+  return result;
+}
 
 export async function convertToTailwindCSS(
   input: string,
   tailwindConverter: TailwindConverter
 ) {
   try {
+    const id = nanoid();
     const jsObject = parse(input);
     const parsed = await postcss().process(jsObject, {
       parser: postcssJs.parse,
     });
     const converted = await tailwindConverter.convertCSS(
-      `root { ${parsed.css} }`
+      wrapCSS(id, parsed.css)
     );
     return JSON.stringify(
-      postcssJs.objectify(converted.convertedRoot as Root)["root"],
+      unwrapJSS(id, postcssJs.objectify(converted.convertedRoot as Root)),
       null,
       vscode.window.activeTextEditor?.options.tabSize || 4
     );
