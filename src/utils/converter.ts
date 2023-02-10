@@ -7,6 +7,7 @@ import { Log } from "./log";
 import { TailwindConverter } from "css-to-tailwindcss";
 import { nanoid } from "nanoid";
 import { isPlainObject } from "./object";
+import replaceString from "replace-string";
 
 function wrapCSS(id: string, css: string) {
   return `${id} { ${css} }`;
@@ -40,7 +41,7 @@ function unwrapJSS(id: string, jss: Record<string, any>) {
     if (key.startsWith("@")) {
       result[key] = deepUnwrapAtRule(id, jssItem);
     } else {
-      result[key.replace(id, "&")] = jssItem;
+      result[replaceString(key, id, "&")] = jssItem;
     }
   });
 
