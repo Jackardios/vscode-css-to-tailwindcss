@@ -64,6 +64,14 @@ Example:
 
 ## Release Notes
 
+### 1.2.5
+
+- Fix: temporary id is replaced with & only once
+
+### 1.2.3
+
+- Fix missing declarations when converting CSSinJS
+
 ### 1.2.2
 
 - Fix fallback TailwindConverter
