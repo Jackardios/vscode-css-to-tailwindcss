@@ -64,6 +64,10 @@ Example:
 
 ## Release Notes
 
+### 1.2.6
+
+- Fix: flex property should convert considering the default values for flexShrink and flexBasis
+
 ### 1.2.5
 
 - Fix: temporary id is replaced with & only once
